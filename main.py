@@ -1,4 +1,6 @@
 import pandas as pd
+from fastapi import FastAPI
+import uvicorn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -27,4 +29,11 @@ def get_intership(skills):
     for i in indices:
        recommendations.append({"Internship" : dataframe['profile'].iloc[i] , "Company" : dataframe["company"].iloc[i] , "Stipend" : dataframe["Stipend"].iloc[i] , "Location" : dataframe["Location"].iloc[i] })
     
+    return recommendations
+
+app = FastAPI()
+
+@app.get("/internship/{skills}")
+def recommendation_func(skills : str):
+    recommendations = get_intership([skills])
     return recommendations
