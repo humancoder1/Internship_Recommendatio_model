@@ -20,9 +20,10 @@ cosine_sim = cosine_similarity(matrix , matrix)
 def get_intership(skills):
     selected_skills = ', '.join(skills)
 
-    new_vector = vectorizer.transform([selected_skills])
-
-    cosine_sim_with_selected_skills = cosine_similarity(new_vector, matrix)
+    user_vector = vectorizer.transform([selected_skills])
+    # print("User Vector shape:", user_vector.shape)
+    # print("Matrix shape:", matrix.shape)
+    cosine_sim_with_selected_skills = cosine_similarity(user_vector, matrix)
 
     sim_scores = list(enumerate(cosine_sim_with_selected_skills[0]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
@@ -30,7 +31,7 @@ def get_intership(skills):
     indices = [score[0] for score in sim_scores[:5]]
     recommendations = []
     for i in indices:
-       recommendations.append({"Internship" : dataframe['profile'].iloc[i] , "Company" : dataframe["company"].iloc[i] , "Stipend" : dataframe["Stipend"].iloc[i] , "Location" : dataframe["Location"].iloc[i] })
+       recommendations.append({"Internship" : dataframe['profile'].iloc[i] , "Company" : dataframe["company"].iloc[i] , "Stipend" : dataframe["Stipend"].iloc[i] , "Location" : dataframe["Location"].iloc[i] ,"Start" : dataframe["Start Date"].iloc[i], "Duration" : dataframe["Duration"].iloc[i] , "Offer" : dataframe["Offer"].iloc[i]})
     
     return recommendations
 
