@@ -1,5 +1,8 @@
 import pandas as pd
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware 
+
+
 import uvicorn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -32,6 +35,20 @@ def get_intership(skills):
     return recommendations
 
 app = FastAPI()
+
+
+origins = [
+    "https://workshala-in.vercel.app",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/internship/{skills}")
 def recommendation_func(skills : str):
